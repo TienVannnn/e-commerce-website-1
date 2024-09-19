@@ -13,6 +13,8 @@
 <script src="/template/customer/js/main.js"></script>
 <script src="/template/customer/js/addToCart.js">
 </script>
+<script src="/template/customer/js/addFavoriteProduct.js"></script>
+
 <script>
     @if(Session::has('error'))
         toastr.error("{{ Session::get('error') }}", "Thất bại");

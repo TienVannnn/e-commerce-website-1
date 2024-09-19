@@ -29,6 +29,10 @@ class User extends Authenticatable
         return $this -> hasMany(Cart::class);
     }
 
+    public function products(){
+        return $this -> belongsToMany(Product::class, 'favorites_product', 'user_id', 'product_id');
+    }
+
     /**
      * The attributes that should be hidden for serialization.
      *

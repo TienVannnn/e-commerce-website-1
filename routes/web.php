@@ -15,6 +15,7 @@ use App\Http\Controllers\Admin\TagController;
 use App\Http\Controllers\Customer\AuthController as CustomerAuthController;
 use App\Http\Controllers\Customer\CartController;
 use App\Http\Controllers\Customer\CustomerOverviewController;
+use App\Http\Controllers\Customer\FavoriteProductController;
 use App\Http\Controllers\Customer\HomeController;
 use Illuminate\Support\Facades\Route;
 
@@ -48,6 +49,7 @@ Route::get('/category/{slugParent}/{slugChild}', [HomeController::class, 'catego
 // Route::POST('/filter-products', [HomeController::class, 'filterProducts']);
 Route::get('/product/{slug}', [HomeController::class, 'product']) -> name('product-c');
 Route::get('/product/addToCart/{id}', [CartController::class, 'addToCart']) -> name('addToCart');
+Route::get('/product/addFavoriteProduct/{id}', [FavoriteProductController::class, 'addFavoriteProduct']) -> name('addFavoriteProduct');
 Route::get('/cart', [CartController::class, 'showCarts']) -> name('client.carts');
 Route::post('/update-cart/{id}', [CartController::class, 'updateCart']);
 Route::post('/remove-cart/{id}', [CartController::class, 'removeFromCart'])->name('cart.remove');
