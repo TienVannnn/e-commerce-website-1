@@ -1,0 +1,26 @@
+.form-check {
+    cursor: pointer;
+}
+
+.form-check:hover {
+    background-color: #e9ecef; /* Hiệu ứng hover */
+}
+
+.form-check input[type="checkbox"] {
+    margin-right: 10px; /* Khoảng cách giữa checkbox và label */
+    cursor: pointer;
+}
+
+.form-check label {
+    cursor: pointer;
+    margin: 0;
+}
+
+.form-custom {
+    display: flex;
+    align-items: center;
+}
+
+#lable-module {
+    width: 100%;
+}
