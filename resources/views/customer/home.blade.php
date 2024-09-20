@@ -193,7 +193,10 @@
                         <img class="img-fluid w-100" src="/uploads/products/{{ $product -> image }}" alt="" style="height: 326px">
                         <div class="product-action">
                             <a title="Thêm sản phẩm này vào giỏ hàng" class="btn btn-outline-dark btn-square addToCart"data-url="{{ route('addToCart', ['id' => $product -> id]) }}" ><i class="fa fa-shopping-cart"></i></a>
-                            <a class="btn btn-outline-dark btn-square" href=""><i class="far fa-heart"></i></a>
+                            <a title="Thích sản phẩm này" class="btn btn-outline-dark btn-square addFavoriteProduct" 
+                                data-url="{{ route('addFavoriteProduct', ['id' => $product->id]) }}">
+                                <i class="far fa-heart"></i>
+                            </a>
                             <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-sync-alt"></i></a>
                             <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-search"></i></a>
                         </div>

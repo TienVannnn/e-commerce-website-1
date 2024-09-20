@@ -7,8 +7,9 @@
 ?>
 @if($orders -> count() > 0 )
     <div class="text-center">
+      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores, quam sed? Explicabo minus itaque vitae deserunt quo quis optio, quam possimus, iure voluptatibus quas! Temporibus ab provident veniam quaerat? A?</p>
       <p class="text-center font-weight-bold">Thông tin đơn hàng của bạn</p>
-      <table class="table table-content table-responsive  table-bordered table-head-bg-info table-bordered-bd-info text-center">
+      <table class="table table-content table-bordered table-head-bg-info table-bordered-bd-info text-center">
         <thead>
           <tr>
             <th scope="col">STT</th>

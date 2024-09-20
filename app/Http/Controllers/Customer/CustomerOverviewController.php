@@ -6,6 +6,7 @@ use App\Models\Invoice;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\FavoriteProduct;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
@@ -48,13 +49,14 @@ class CustomerOverviewController extends Controller
     }
 
     public function favorites_product(){
-        if(!Auth::user()){
+        $user = Auth::user();
+        if(!$user){
             return redirect() -> route('login.customer.form');
         }
         $title = 'Thông tin khách hàng - Sản phẩm yêu thích';
-        $user = Auth::user();
         $categories = Category::where('active', 1) -> where('parent_id', 0) -> orderByDesc('id') -> get();
-        return view('customer.customer_overview.overview', compact('title', 'categories', 'user'));
+        $products = FavoriteProduct::where('user_id', $user -> id) -> paginate(10);
+        return view('customer.customer_overview.favotites_product', compact('title', 'categories', 'user', 'products'));
     }
 
     public function edit_account(){

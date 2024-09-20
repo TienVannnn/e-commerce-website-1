@@ -12,10 +12,7 @@ function addFavoriteProduct(e) {
         },
         error: function (xhr, status, error) {
             if (xhr.status == 401) {
-                toastr.error(
-                    "Bạn cần đăng nhập để thực hiện thao tác này",
-                    "Lỗi"
-                );
+                toastr.error("Bạn cần đăng nhập để thích sản phẩm", "Lỗi");
             } else if (xhr.status == 409) {
                 toastr.warning(
                     "Sản phẩm đã có trong danh sách yêu thích",

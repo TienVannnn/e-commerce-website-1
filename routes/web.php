@@ -65,6 +65,7 @@ Route::get('/customer/overview', [CustomerOverviewController::class, 'overview']
 Route::get('/customer/orders', [CustomerOverviewController::class, 'orders']) -> name('overview.orders');
 Route::get('/customer/orders/{id}', [CustomerOverviewController::class, 'order_detail']) -> name('overview.order.detail');
 Route::get('/customer/favorites-product', [CustomerOverviewController::class, 'favorites_product']) -> name('overview.favorite');
+Route::delete('/customer/delete-favorites-product', [CustomerOverviewController::class, 'delete_favorite_product']) -> name('delete-favorite-product');
 Route::get('/customer/edit-account', [CustomerOverviewController::class, 'edit_account']) -> name('overview.account');
 Route::get('/customer/logout', [CustomerAuthController::class, 'logout']) -> name('overview.logout');
 Route::post('/customer/edit-account', [CustomerOverviewController::class, 'handleUpdateAccount']) -> name('overview.handleUpdateAccount');
