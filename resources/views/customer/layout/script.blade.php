@@ -52,4 +52,8 @@
     @if(Session::has('error-changePass'))
         toastr.error("{{ Session::get('error-changePass') }}", "Thành công");
     @endif
+
+    @if(Session::has('success-delete-favo'))
+        toastr.success("{{ Session::get('success-delete-favo') }}", "Thành công");
+    @endif
 </script>

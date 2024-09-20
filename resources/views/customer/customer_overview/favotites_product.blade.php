@@ -30,13 +30,13 @@
                 <th>
                     <div class="d-flex align-items-center border-none justify-content-center">
                         <a title="Thêm sản phẩm vào giỏ hàng" class="btn btn-success btn-sm addToCart mr-2" 
-                        data-url="{{ route('addToCart', ['id' => $product->id]) }}">
-                        <i class="far fa-heart"></i>
+                        data-url="{{ route('addToCart', ['id' => $product -> product ->id]) }}">
+                        <i class="fas fa-shopping-cart"></i>
                     </a>    
-                    <form action="{{ route('delete-favorite-product') }}" method="POST">
+                    <form action="{{ route('delete-favorite-product', $product -> product -> id) }}" method="POST">
                         @method('DELETE')
                         @csrf
-                        <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                        <button onclick="return confirm('Bạn có chắc muốn xóa sản phẩm này khỏi danh sách yêu thích?')" type="submit" class="btn btn-danger btn-sm"><i class="fas fa-trash" title="Xóa sản phẩm này khỏi danh sách yêu thích"></i></button>
                     </form>
                     </div>
                 </th>

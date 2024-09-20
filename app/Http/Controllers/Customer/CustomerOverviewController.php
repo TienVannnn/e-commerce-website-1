@@ -123,4 +123,14 @@ class CustomerOverviewController extends Controller
         }
         return redirect() -> back();
     }
+
+    public function delete_favorite_product($id){
+        $product = FavoriteProduct::where('product_id', $id) -> first();
+        if(!$product){
+            abort(404);
+        }
+        $product -> delete();
+        Session::flash('success-delete-favo', 'Xóa sản phẩm yêu thích thành công');
+        return redirect() -> back();
+    }
 }
