@@ -17,6 +17,7 @@ use App\Http\Controllers\Customer\CartController;
 use App\Http\Controllers\Customer\CustomerOverviewController;
 use App\Http\Controllers\Customer\FavoriteProductController;
 use App\Http\Controllers\Customer\HomeController;
+use App\Http\Controllers\Customer\ProductController as CustomerProductController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -59,6 +60,7 @@ Route::get('/login', [CustomerAuthController::class, 'showFormLogin']) -> name('
 Route::post('/login', [CustomerAuthController::class, 'login']) -> name('login.customer');
 Route::get('/register', [CustomerAuthController::class, 'showFormRegister']) -> name('register.customer.form');
 Route::post('/register', [CustomerAuthController::class, 'register']) -> name('register.customer');
+Route::get('/search-products', [CustomerProductController::class, 'search']);
 
 # Overview customer
 Route::get('/customer/overview', [CustomerOverviewController::class, 'overview']) -> name('overview');

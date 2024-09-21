@@ -59,10 +59,10 @@
                 <span class="h1 text-uppercase text-dark bg-primary px-2 ml-n1">Shop</span>
             </a>
         </div>
-        <div class="col-lg-4 col-6 text-left">
+        <div class="col-lg-4 col-6">
             <form action="">
                 <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search for products">
+                    <input type="text" id="search-box" class="form-control" placeholder="Nhập tên sản phẩm để tìm kiếm..."  style="width: 255px" >
                     <div class="input-group-append">
                         <span class="input-group-text bg-transparent text-primary">
                             <i class="fa fa-search"></i>

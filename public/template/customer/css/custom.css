@@ -21,6 +21,83 @@
 
 .btn-block.active,
 .btn-block:active {
-    background-color: #ffd333; /* Màu nền khi active */
+    background-color: #b1911b; /* Màu nền khi active */
     color: #fff; /* Màu chữ khi active */
+}
+
+.product-suggestion {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    border-bottom: 1px solid #ccc; /* Đường viền dưới */
+}
+
+.product-suggestion:last-child {
+    border-bottom: none; /* Bỏ đường viền dưới cho item cuối cùng */
+}
+
+.product-suggestion img {
+    margin-right: 10px;
+}
+
+.product-suggestion span {
+    margin-right: 15px;
+}
+
+.flex-col {
+    display: flex;
+    flex-direction: column; /* Đặt tên và giá theo chiều dọc */
+}
+
+.product-name {
+    color: #292b2c;
+    transition: all 0.3s ease-in-out;
+    margin-bottom: 5px;
+    text-decoration: none;
+}
+
+.product-name:hover {
+    color: #b1911b;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.product-price {
+    margin-top: 5px;
+    color: #bc9c27; /* Màu sắc cho giá sản phẩm */
+}
+
+.tt-menu {
+    width: 100%;
+    max-width: none;
+    z-index: 1000;
+    background-color: white;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.empty-message {
+    padding: 10px;
+    text-align: center;
+    color: #999;
+    background-color: #f8f8f8;
+    border: 1px solid #ddd;
+    width: 100%;
+}
+
+.view-all {
+    display: block;
+    margin: 10px auto;
+    padding: 10px;
+    text-align: center;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.view-all:hover {
+    background-color: #0056b3;
 }

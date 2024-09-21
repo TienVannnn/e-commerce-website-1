@@ -14,6 +14,8 @@
 <script src="/template/customer/js/addToCart.js">
 </script>
 <script src="/template/customer/js/addFavoriteProduct.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/corejs-typeahead/1.3.0/typeahead.bundle.min.js"></script>
+<script src="/template/customer/js/search_typeahead.js"></script>
 
 <script>
     @if(Session::has('error'))
