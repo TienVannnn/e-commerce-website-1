@@ -60,7 +60,8 @@ Route::get('/login', [CustomerAuthController::class, 'showFormLogin']) -> name('
 Route::post('/login', [CustomerAuthController::class, 'login']) -> name('login.customer');
 Route::get('/register', [CustomerAuthController::class, 'showFormRegister']) -> name('register.customer.form');
 Route::post('/register', [CustomerAuthController::class, 'register']) -> name('register.customer');
-Route::get('/search-products', [CustomerProductController::class, 'search']);
+Route::get('/search', [CustomerProductController::class, 'search']);
+Route::get('/search-products', [CustomerProductController::class, 'search_all_products']) -> name('search_all');
 
 # Overview customer
 Route::get('/customer/overview', [CustomerOverviewController::class, 'overview']) -> name('overview');

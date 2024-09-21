@@ -60,16 +60,17 @@
             </a>
         </div>
         <div class="col-lg-4 col-6">
-            <form action="">
+            <form action="{{ route('search_all') }}" method="GET" autocomplete="off">
                 <div class="input-group">
-                    <input type="text" id="search-box" class="form-control" placeholder="Nhập tên sản phẩm để tìm kiếm..."  style="width: 255px" >
+                    <input type="text" id="search-box" class="form-control" name="text" placeholder="Nhập tên sản phẩm để tìm kiếm..." style="width: 255px">
                     <div class="input-group-append">
-                        <span class="input-group-text bg-transparent text-primary">
+                        <button type="submit" class="input-group-text bg-transparent text-primary">
                             <i class="fa fa-search"></i>
-                        </span>
+                        </button>
                     </div>
                 </div>
             </form>
+            
         </div>
         <div class="col-lg-4 col-6 text-right">
             <p class="m-0">Điện thoại liên lạc</p>
