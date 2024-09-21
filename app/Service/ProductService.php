@@ -184,7 +184,6 @@ use Illuminate\Support\Facades\Session;
                 foreach ($filesToDelete as $file) {
                     unlink($file);
                 }
-        
                 Session::flash('success', 'Xóa sản phẩm ' . $name . ' thành công');
                 return true;
             } catch (\Exception $e) {

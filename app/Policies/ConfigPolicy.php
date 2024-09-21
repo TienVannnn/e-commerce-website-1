@@ -46,7 +46,7 @@ class ConfigPolicy
      */
     public function delete(Manager $manager, Config $config): bool
     {
-        return $manager -> checkPermissionAccess(Config::get('permissions.keycode.delete-config'));
+        return $manager -> checkPermissionAccess(ConfigSP::get('permissions.keycode.delete-config'));
     }
 
     /**

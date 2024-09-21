@@ -35,7 +35,7 @@
                     <div class="form-group mb-5 border p-3">
                         <h3>Xóa tài khoản</h3>
                         <p>Hành động này sẽ xóa vĩnh viễn tài khoản của bạn cũng như tất cả dữ liệu liên quan và không thể thay đổi được. Hãy chắc chắn trước khi tiếp tục.</p>
-                        <a href="{{ route('overview.handleDeleteAccount') }}" class="btn btn-primary px-3">Xóa tài khoản</a>
+                        <a href="{{ route('overview.handleDeleteAccount') }}" class="btn btn-primary px-3" title="Xóa tài khoản vĩnh viễn" onclick="return confirm('Bạn có chắc chắn muốn xóa tài khoản này?')">Xóa tài khoản</a>
                     </div>
                 </div>
                 <div class="tab-pane fade" id="change-password">

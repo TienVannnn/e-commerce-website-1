@@ -30,10 +30,11 @@
       ?>
         @foreach ($cart as $key => $detail)
         <?php 
-          $total_price += $detail['quantity'] * $detail['price']
+          $total_price += $detail['quantity'] * $detail['price'];
+          $count += 1;
         ?>
           <tr>
-              <td> {{ $count + 1 }}</td>
+              <td> {{ $count }}</td>
               <td>{{ $detail['name'] }}</td> 
               <td><img src="{{ asset('uploads/products/' . $detail['image']) }}" alt="{{ $detail['name'] }}" width="50"></td>
               <td>{{ number_format($detail['price']) }}đ</td>

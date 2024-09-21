@@ -70,5 +70,5 @@ Route::get('/customer/edit-account', [CustomerOverviewController::class, 'edit_a
 Route::get('/customer/logout', [CustomerAuthController::class, 'logout']) -> name('overview.logout');
 Route::post('/customer/edit-account', [CustomerOverviewController::class, 'handleUpdateAccount']) -> name('overview.handleUpdateAccount');
 Route::post('/customer/change-password', [CustomerOverviewController::class, 'changePassword']) -> name('overview.changePassword');
-Route::post('/customer/delete-account', [CustomerOverviewController::class, 'handleDeleteAccount']) -> name('overview.handleDeleteAccount');
+Route::get('/customer/delete-account', [CustomerOverviewController::class, 'handleDeleteAccount']) -> name('overview.handleDeleteAccount');
 

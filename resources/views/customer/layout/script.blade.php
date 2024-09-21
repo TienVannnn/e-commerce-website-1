@@ -56,4 +56,12 @@
     @if(Session::has('success-delete-favo'))
         toastr.success("{{ Session::get('success-delete-favo') }}", "Thành công");
     @endif
+
+    @if(Session::has('success-delete-account'))
+        toastr.success("{{ Session::get('success-delete-account') }}", "Thành công");
+    @endif
+
+    @if(Session::has('error-delete-account'))
+        toastr.error("{{ Session::get('error-delete-account') }}", "Thành công");
+    @endif
 </script>

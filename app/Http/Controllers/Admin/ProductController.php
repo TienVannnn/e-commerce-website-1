@@ -91,8 +91,8 @@ class ProductController extends Controller
      */
     public function destroy(string $id)
     {
-        Gate::authorize('delete', Product::class);
         $product = Product::find($id);
+        Gate::authorize('delete', $product);
         if(!$product){
             Session::flash('error', 'Product không tồn tại');
             return redirect() -> back();

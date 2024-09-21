@@ -133,4 +133,23 @@ class CustomerOverviewController extends Controller
         Session::flash('success-delete-favo', 'Xóa sản phẩm yêu thích thành công');
         return redirect() -> back();
     }
+
+    public function handleDeleteAccount(){
+        $user = Auth::user();
+        if(!$user){
+            return redirect() -> route('login.customer.form');
+        }
+        try{
+            $items = FavoriteProduct::where('user_id', $user -> id) -> get();
+            foreach($items as $item){
+                $item -> delete();
+            }
+            $user -> delete();
+            Session::flash('success-delete-account', 'Xóa tài khoản thành công');
+        }
+        catch(\Exception $e){
+            Session::flash('error-delete-account', 'Xóa tài khoản lỗi');
+        }
+        return redirect('/');
+    }
 }
