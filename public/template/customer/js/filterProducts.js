@@ -75,6 +75,8 @@ $(document).ready(function () {
             data: {
                 price_range: selectedPrices,
                 category_id: category_id,
+                sort: selectedSort,
+                limit: selectedLimit,
             },
             success: function (response) {
                 toastr.success(response.message, "Thành công");
@@ -95,6 +97,21 @@ $(document).ready(function () {
             },
         });
     }
+
+    let selectedSort = "Latest";
+    let selectedLimit = 9;
+
+    $(".dropdown-item[data-sort]").click(function (e) {
+        e.preventDefault();
+        selectedSort = $(this).data("sort");
+        filterProducts();
+    });
+
+    $(".dropdown-item[data-limit]").click(function (e) {
+        e.preventDefault();
+        selectedLimit = $(this).data("limit");
+        filterProducts();
+    });
 
     $('#priceFilterForm input[type="checkbox"]').change(function () {
         if ($(this).attr("id") === "price-all") {

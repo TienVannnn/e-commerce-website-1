@@ -31,11 +31,27 @@ class FilterProductController extends Controller
                 }
             });
         }
+
+        if ($request->has('sort')) {
+            switch ($request->input('sort')) {
+                case 'Oldest':
+                    $query->orderBy('id', 'asc');
+                    break;
+                case 'Lastest':
+                    $query->orderBy('id', 'desc');
+                    break;
+                default:
+                    $query->orderBy('id', 'desc');
+                    break;
+            }
+        }
+
+        $limit = $request->input('limit', 9);
     
-        $products = $query->paginate(9);
+        $products = $query->paginate($limit);
     
         return response()->json([
-            'message' => 'Lọc sản phẩm theo giá trị thành công',
+            'message' => 'Lọc sản phẩm thành công',
             'products' => $products
         ]);
     }

@@ -49,39 +49,11 @@ class HomeController extends Controller
     public function category_child($slugParent, $slugChild){
         $categories = $this -> cate -> where('active', 1) -> where('parent_id', 0) -> orderByDesc('id') -> get();
         $c_parent = $this -> cate -> where('active', 1) -> where('slug', $slugParent) -> first();
-        $c_child = $this -> cate -> where('active', 1) -> where('slug', $slugChild) -> first();
-        $title = $c_child -> name;
-        $products = $this -> product -> where('category_id', $c_child -> id) -> orderByDesc('id') -> paginate(9);
-        return view('customer.category', compact('title', 'categories', 'c_parent', 'c_child', 'products'));
+        $category = $this -> cate -> where('active', 1) -> where('slug', $slugChild) -> first();
+        $title = $category -> name;
+        $products = $this -> product -> where('category_id', $category -> id) -> orderByDesc('id') -> paginate(9);
+        return view('customer.category', compact('title', 'categories', 'c_parent', 'category', 'products'));
     }
-
-    // public function filterProducts(Request $request)
-    // {
-    //     try {
-    //         $category = $this -> cate -> where('active', 1) -> where('id', $request -> categoryId) -> first();
-    //         $query = Product::where('category_id', $request->category_id);
-
-    //         if ($request->prices) {
-    //             $query->where(function ($q) use ($request) {
-    //                 foreach ($request->prices as $price) {
-    //                     if (isset($price['min']) && isset($price['max'])) {
-    //                         $q->orWhereBetween('price', [$price['min'], $price['max']]);
-    //                     }
-    //                 }
-    //             });
-    //         }
-
-    //         $products = $query->get();
-
-    //         // Trả về HTML cập nhật hoặc view sản phẩm
-    //         return view('customer.category', compact('products', 'category'));
-    //     } catch (\Exception $e) {
-    //         Log::error('Error filtering products: ' . $e->getMessage());
-    //         return response()->json(['error' => 'Lỗi xử lý yêu cầu'], 500);
-    //     }
-    // }
-
-
 
     public function product($slug)
     {

@@ -68,7 +68,7 @@
 }
 
 .tt-menu {
-    width: calc(100% + 41px);
+    width: calc(100% + 40px);
     max-width: none;
     z-index: 1000;
     background-color: white;
