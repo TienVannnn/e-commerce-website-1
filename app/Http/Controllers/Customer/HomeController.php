@@ -38,7 +38,7 @@ class HomeController extends Controller
         }
         $allCategoryIds = $category->allChildCategories()->get()->pluck('id')->toArray();
         $allCategoryIds[] = $category->id;
-        $products = Product::whereIn('category_id', $allCategoryIds)-> paginate(2);
+        $products = Product::whereIn('category_id', $allCategoryIds)-> paginate(6);
 
         $categories = $this -> cate -> where('active', 1) -> where('parent_id', 0) -> orderByDesc('id') -> get();
         // $products = $this -> product -> where('active', 1) -> where('category_id', $category -> id) -> get();

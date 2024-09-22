@@ -1,25 +1,26 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\TagController;
 use App\Http\Controllers\Admin\AuthController;
-use App\Http\Controllers\Admin\CartAdminController;
-use App\Http\Controllers\Admin\CategoryController;
-use App\Http\Controllers\Admin\ConfigController;
-use App\Http\Controllers\Admin\ManagerController;
 use App\Http\Controllers\Admin\MenuController;
-use App\Http\Controllers\Admin\OrderAdminController;
-use App\Http\Controllers\Admin\PermissionController;
-use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\ConfigController;
 use App\Http\Controllers\Admin\SearchController;
 use App\Http\Controllers\Admin\SliderController;
-use App\Http\Controllers\Admin\TagController;
-use App\Http\Controllers\Customer\AuthController as CustomerAuthController;
+use App\Http\Controllers\Admin\ManagerController;
+use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Customer\CartController;
-use App\Http\Controllers\Customer\CustomerOverviewController;
-use App\Http\Controllers\Customer\FavoriteProductController;
 use App\Http\Controllers\Customer\HomeController;
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\CartAdminController;
+use App\Http\Controllers\Admin\OrderAdminController;
+use App\Http\Controllers\Admin\PermissionController;
+use App\Http\Controllers\Customer\FilterProductController;
+use App\Http\Controllers\Customer\FavoriteProductController;
+use App\Http\Controllers\Customer\CustomerOverviewController;
+use App\Http\Controllers\Customer\AuthController as CustomerAuthController;
 use App\Http\Controllers\Customer\ProductController as CustomerProductController;
-use Illuminate\Support\Facades\Route;
 
 
 #Admin
@@ -48,7 +49,7 @@ Route::middleware('auth:manager') -> prefix('admin') -> group(function(){
 Route::get('/', [HomeController::class, 'home']);
 Route::get('/category/{slug}', [HomeController::class, 'category']) -> name('category-c');
 Route::get('/category/{slugParent}/{slugChild}', [HomeController::class, 'category_child']) -> name('category-child');
-// Route::POST('/filter-products', [HomeController::class, 'filterProducts']);
+Route::get('/filter-products', [FilterProductController::class, 'filterProducts'])->name('filterProducts');
 Route::get('/product/{slug}', [HomeController::class, 'product']) -> name('product-c');
 Route::get('/product/addToCart/{id}', [CartController::class, 'addToCart']) -> name('addToCart');
 Route::get('/product/addFavoriteProduct/{id}', [FavoriteProductController::class, 'addFavoriteProduct']) -> name('addFavoriteProduct');

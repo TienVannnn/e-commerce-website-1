@@ -24,3 +24,4 @@
     <link rel="stylesheet" href="http://cdn.bootcss.com/toastr.js/latest/css/toastr.min.css">
     <link rel="stylesheet" href="/template/customer/css/custom.css">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    @routes

@@ -1,4 +1,5 @@
 function addFavoriteProduct(e) {
+    console.log("favo-click");
     e.preventDefault();
     let url = $(this).data("url");
     $.ajax({
@@ -21,12 +22,13 @@ function addFavoriteProduct(e) {
             } else {
                 toastr.error("Thêm sản phẩm yêu thích lỗi", "Thất bại");
             }
-            console.log("Error details:");
-            console.log("Status: " + status);
-            console.log("Error: " + error);
-            console.log("Response Text: " + xhr.responseText);
+            // console.log("Error details:");
+            // console.log("Status: " + status);
+            // console.log("Error: " + error);
+            // console.log("Response Text: " + xhr.responseText);
         },
     });
 }
 
-$(".addFavoriteProduct").on("click", addFavoriteProduct);
+// $(".addFavoriteProduct").on("click", addFavoriteProduct);
+$(document).on("click", ".addFavoriteProduct", addFavoriteProduct);

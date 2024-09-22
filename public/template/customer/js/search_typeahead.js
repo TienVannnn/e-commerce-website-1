@@ -8,10 +8,6 @@ $(document).ready(function () {
         },
     });
 
-    function formatPrice(price) {
-        return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "đ"; // Thêm dấu phân cách ngàn
-    }
-
     $(".search-box").typeahead(
         {
             hint: true,

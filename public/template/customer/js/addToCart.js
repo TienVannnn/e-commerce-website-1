@@ -1,4 +1,5 @@
 function addToCart(e) {
+    console.log("click");
     e.preventDefault();
     let url = $(this).data("url");
     $.ajax({
@@ -47,5 +48,7 @@ function addToCartWithQuantity(e) {
         },
     });
 }
-$(".addToCart").on("click", addToCart);
-$(".addToCartWithQuantity").on("click", addToCartWithQuantity);
+// $(".addToCart").on("click", addToCart);
+// $(".addToCartWithQuantity").on("click", addToCartWithQuantity);
+$(document).on("click", ".addToCart", addToCart);
+$(document).on("click", ".addToCartWithQuantity", addToCartWithQuantity);

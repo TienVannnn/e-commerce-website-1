@@ -9,12 +9,15 @@
 <script src="/template/customer/mail/contact.js"></script>
 
 <!-- Template Javascript -->
+<script src="/template/customer/js/ajaxSetup.js"></script>
 <script src="/template/customer/js/toggle_search_mobile.js"></script>
 <script src="http://cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
 <script src="/template/customer/js/main.js"></script>
 <script src="/template/customer/js/addToCart.js">
 </script>
 <script src="/template/customer/js/addFavoriteProduct.js"></script>
+<script src="/template/customer/js/filterProducts.js">
+</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/corejs-typeahead/1.3.0/typeahead.bundle.min.js"></script>
 <script src="/template/customer/js/search_typeahead.js"></script>
 

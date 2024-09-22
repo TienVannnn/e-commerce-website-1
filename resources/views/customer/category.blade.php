@@ -14,36 +14,30 @@
                 <!-- Price Start -->
                 <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Filter by price</span></h5>
                 <div class="bg-light p-4 mb-30">
-                    <form>
+                    <form id="priceFilterForm" data-category="{{ $category -> id }}">
                         <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                             <input type="checkbox" class="custom-control-input" checked id="price-all">
                             <label class="custom-control-label" for="price-all">All Price</label>
-                            <span class="badge border font-weight-normal">1000</span>
                         </div>
                         <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" id="price-1">
-                            <label class="custom-control-label" for="price-1">$0 - $100</label>
-                            <span class="badge border font-weight-normal">150</span>
+                            <input type="checkbox" class="custom-control-input" name="price_range[]" value="0-1000000" id="price-1">
+                            <label class="custom-control-label" for="price-1">0 - 1,000,000đ</label>
                         </div>
                         <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" id="price-2">
-                            <label class="custom-control-label" for="price-2">$100 - $200</label>
-                            <span class="badge border font-weight-normal">295</span>
+                            <input type="checkbox" class="custom-control-input" name="price_range[]" value="1000000-5000000" id="price-2">
+                            <label class="custom-control-label" for="price-2">1,000,000đ - 5,000,000đ</label>
                         </div>
                         <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" id="price-3">
-                            <label class="custom-control-label" for="price-3">$200 - $300</label>
-                            <span class="badge border font-weight-normal">246</span>
+                            <input type="checkbox" class="custom-control-input" name="price_range[]" value="5000000-30000000" id="price-3">
+                            <label class="custom-control-label" for="price-3">5,000,000đ - 30,000,000đ</label>
                         </div>
                         <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" id="price-4">
-                            <label class="custom-control-label" for="price-4">$300 - $400</label>
-                            <span class="badge border font-weight-normal">145</span>
+                            <input type="checkbox" class="custom-control-input" name="price_range[]" value="30000000-100000000" id="price-4">
+                            <label class="custom-control-label" for="price-4">30,000,000đ - 100,000,000đ</label>
                         </div>
                         <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
-                            <input type="checkbox" class="custom-control-input" id="price-5">
-                            <label class="custom-control-label" for="price-5">$400 - $500</label>
-                            <span class="badge border font-weight-normal">168</span>
+                            <input type="checkbox" class="custom-control-input" name="price_range[]" value="100000000-10000000000" id="price-5">
+                            <label class="custom-control-label" for="price-5"> > 100,000,000đ</label>
                         </div>
                     </form>
                 </div>
@@ -88,9 +82,9 @@
                                 <div class="product-img position-relative overflow-hidden">
                                     <img class="img-fluid w-100" src="/uploads/products/{{ $product -> image }}" alt="" style="height: 326px">
                                     <div class="product-action">
-                                        <a title="Thêm sản phẩm này vào giỏ hàng" class="btn btn-outline-dark btn-square addToCart"data-url="{{ route('addToCart', ['id' => $product -> id]) }}" ><i class="fa fa-shopping-cart"></i></a>
+                                        <a title="Thêm sản phẩm này vào giỏ hàng" class="btn btn-outline-dark btn-square addToCart"data-url="{{ route('addToCart',  $product -> id) }}" ><i class="fa fa-shopping-cart"></i></a>
                                         <a title="Thích sản phẩm này" class="btn btn-outline-dark btn-square addFavoriteProduct" 
-                                            data-url="{{ route('addFavoriteProduct', ['id' => $product->id]) }}">
+                                            data-url="{{ route('addFavoriteProduct', $product->id) }}">
                                             <i class="far fa-heart"></i>
                                         </a>
                                         <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-sync-alt"></i></a>
