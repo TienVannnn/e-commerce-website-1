@@ -9,6 +9,7 @@
 <script src="/template/customer/mail/contact.js"></script>
 
 <!-- Template Javascript -->
+<script src="/template/customer/js/toggle_search_mobile.js"></script>
 <script src="http://cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
 <script src="/template/customer/js/main.js"></script>
 <script src="/template/customer/js/addToCart.js">

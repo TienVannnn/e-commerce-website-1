@@ -49,7 +49,11 @@
                     <i class="fas fa-shopping-cart text-dark"></i>
                     <span class="badge text-dark border border-dark rounded-circle" style="padding-bottom: 2px;">0</span>
                 </a>
+                <a href="javascript:void(0)" class="btn px-0 ml-2" id="search-btn">
+                    <i class="fas fa-search text-dark"></i>
+                </a>
             </div>
+            
         </div>
     </div>
     <div class="row align-items-center bg-light py-3 px-xl-5 d-none d-lg-flex">
@@ -62,7 +66,7 @@
         <div class="col-lg-4 col-6">
             <form action="{{ route('search_all') }}" method="GET" autocomplete="off">
                 <div class="input-group">
-                    <input type="text" id="search-box" class="form-control" name="text" placeholder="Nhập tên sản phẩm để tìm kiếm..." style="width: 255px">
+                    <input type="text" class="form-control search-box" name="text" placeholder="Nhập tên sản phẩm để tìm kiếm..." >
                     <div class="input-group-append">
                         <button type="submit" class="input-group-text bg-transparent text-primary">
                             <i class="fa fa-search"></i>
@@ -146,4 +150,16 @@
         </div>
     </div>
 </div>
+<div id="search-box-mobile" class="search-box-mobile d-none container mb-3 text-center">
+    <form action="{{ route('search_all') }}" method="GET" autocomplete="off">
+      <div class="input-group fix-mobile-search">
+        <input type="text" class="form-control search-box"  name="text" placeholder="Nhập tên sản phẩm để tìm kiếm..." >
+        <div class="input-group-append">
+            <button type="submit" class="input-group-text bg-transparent text-primary">
+                <i class="fa fa-search"></i>
+            </button>
+        </div>
+    </div>
+    </form>
+  </div>
 <!-- Navbar End -->

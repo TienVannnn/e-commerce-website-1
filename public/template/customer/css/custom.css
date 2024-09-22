@@ -68,7 +68,7 @@
 }
 
 .tt-menu {
-    width: 100%;
+    width: calc(100% + 41px);
     max-width: none;
     z-index: 1000;
     background-color: white;
@@ -100,4 +100,49 @@
 
 .view-all:hover {
     background-color: #0056b3;
+}
+
+@media (min-width: 992px) {
+    .search-box {
+        width: calc(254px + (178 * ((100vw - 992px) / 1000)));
+    }
+}
+
+@media (max-width: 991px) {
+    .search-box-mobile.show {
+        display: block !important;
+        transition: all 0.3s ease-in-out;
+    }
+    .search-box {
+        width: calc(649px + (178 * ((100vw - 992px) / 1000)));
+    }
+}
+
+@media (max-width: 768px) {
+    .search-box {
+        width: calc(510px + (178 * ((100vw - 992px) / 1000)));
+    }
+}
+
+@media (max-width: 515px) {
+    .search-box {
+        width: calc(414px + (178 * ((100vw - 992px) / 1000)));
+    }
+}
+
+@media (max-width: 415px) {
+    .search-box {
+        width: calc(286px + (((100vw - 992px) / 1000)));
+    }
+}
+
+@media (max-width: 374px) {
+    .search-box {
+        width: calc(100% + 5px);
+    }
+}
+
+.fix-mobile-search {
+    display: flex;
+    justify-content: center;
 }
