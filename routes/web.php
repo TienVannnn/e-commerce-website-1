@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\OrderAdminController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\SearchController;
 use App\Http\Controllers\Admin\SliderController;
 use App\Http\Controllers\Admin\TagController;
 use App\Http\Controllers\Customer\AuthController as CustomerAuthController;
@@ -29,7 +30,7 @@ Route::middleware('auth:manager') -> prefix('admin') -> group(function(){
     Route::get('/', function(){
         return view('admin.layout_admin.home');
     })-> name('admin.home');
-    
+    Route::get('/search-products', [SearchController::class, 'search']) -> name('search-admin');
     Route::resource('/category', CategoryController::class);
     Route::resource('/menus', MenuController::class);
     Route::resource('/products', ProductController::class);

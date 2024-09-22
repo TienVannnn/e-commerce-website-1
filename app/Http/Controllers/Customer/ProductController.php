@@ -29,7 +29,7 @@ class ProductController extends Controller
 
         $products = Product::where('active', 1)
             ->where('name', 'LIKE', '%' . $text . '%')
-            ->paginate(9);
+            ->paginate(9) -> appends(['text' => $text]);
 
         $message = '';
         if ($products->isEmpty()) {

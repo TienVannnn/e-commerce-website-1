@@ -29,9 +29,9 @@
       class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom"
     >
       <div class="container-fluid">
-        <nav
-          class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex"
-        >
+        <nav class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex">
+          
+          <form action="{{ route('search-admin') }}" method="GET" autocomplete="off">
           <div class="input-group">
             <div class="input-group-prepend">
               <button type="submit" class="btn btn-search pe-1">
@@ -40,10 +40,12 @@
             </div>
             <input
               type="text"
-              placeholder="Search ..."
+              name="text"
+              placeholder="Search with product..."
               class="form-control"
             />
           </div>
+        </form>
         </nav>
 
         <ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
@@ -65,7 +67,7 @@
                 <div class="input-group">
                   <input
                     type="text"
-                    placeholder="Search ..."
+                    placeholder="Search with product..."
                     class="form-control"
                   />
                 </div>
