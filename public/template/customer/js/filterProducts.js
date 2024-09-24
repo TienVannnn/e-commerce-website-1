@@ -57,7 +57,7 @@ $(document).ready(function () {
         let category_id = $("#priceFilterForm").data("category");
 
         if ($("#price-all").is(":checked")) {
-            selectedPrices = []; // Nếu chọn "All Price", không thêm giá vào mảng
+            selectedPrices = [];
         } else {
             $('#priceFilterForm input[type="checkbox"]:checked').each(
                 function () {

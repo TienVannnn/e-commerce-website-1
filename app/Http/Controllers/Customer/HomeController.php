@@ -28,6 +28,8 @@ class HomeController extends Controller
         return view('customer.home', compact('sliders', 'categories', 'productFeatured', 'recentProducts'));
     }
 
+    
+
     public function category($slug){
         $category = $this -> cate -> where('active', 1) -> where('slug', $slug) -> first();
         if(!$category){

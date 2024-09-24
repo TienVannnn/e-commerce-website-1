@@ -1,11 +1,17 @@
 <?php
 
 namespace App\Http\Controllers\Customer;
-use App\Models\Product;
+use App\Models\Review;
 
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use App\Models\Product;
 use App\Models\Category;
+use App\Models\ReviewImage;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
+
 
 class ProductController extends Controller
 {
@@ -45,5 +51,157 @@ class ProductController extends Controller
         ]);
     }
 
+    public function all_product(){
+        $categories = Category::where('active', 1)
+            ->where('parent_id', 0)
+            ->orderByDesc('id')
+            ->get();
+        $title = 'Tất cả sản phẩm';
+        $products = Product::where('active', 1) -> orderByDesc('id') -> paginate(15);
+        return view('customer.product.all_product', compact('title', 'categories', 'products'));
+    }
+
+    // Xử lý không cần lưu vào bộ nhớ tam
+    public function review(Request $request, $slug) {
+        // dd($request -> images);
+        $user = Auth::user();
+        if (!$user) {
+            return redirect()->route('login.customer.form');
+        }
+        $product = Product::where('active', 1)->where('slug', $slug)->first();
+        if (!$product) {
+            abort(404);
+        }
+        try {
+            DB::beginTransaction();
+            $review = Review::create([
+                'rate' => $request->rate,
+                'content' => $request->content,
+                'user_id' => $user->id,
+                'product_id' => $product->id,
+            ]);
+    
+            if ($request->has('images')) {
+                foreach ($request->images as $imageName) {
+                    $finalPath = public_path('./uploads/customer/reviews/' . $imageName);
+                    file_put_contents($finalPath, ''); 
+                    ReviewImage::create([
+                        'review_id' => $review->id,
+                        'image' => $imageName
+                    ]);
+                }
+            }
+            DB::commit();
+            Session::flash('success-review', 'Đánh giá của bạn đã được gửi!');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Session::flash('error-review', 'Đánh giá của bạn gửi thất bại! ' . $e->getMessage());
+        }
+        return redirect()->back();
+    }
+
+    public function upload(Request $request)
+    {
+        if ($request->hasFile('image')) {
+            foreach ($request->file('image') as $file) { 
+                $filename = time() . '_' . $file->getClientOriginalName();
+            }
+            return response()->json(['success' => true, 'filename' => $filename]); 
+        }
+        return response()->json(['error' => 'No file uploaded'], 400);
+    }
+    
+    public function revert(Request $request)
+    {
+        $filename = $request->input('filename'); 
+        if($filename){
+            return response()->json(['success' => true]);
+        }
+        return response()->json(['error' => 'File not found or is a directory'], 404); 
+    }
+
+    // xử lý lưu vào bộ nhớ tạm
+
+    // public function review(Request $request, $slug) {
+    //     // dd($request -> images);
+    //     $user = Auth::user();
+    //     if (!$user) {
+    //         return redirect()->route('login.customer.form');
+    //     }
+    //     $product = Product::where('active', 1)->where('slug', $slug)->first();
+    //     if (!$product) {
+    //         abort(404);
+    //     }
+    //     try {
+    //         DB::beginTransaction();
+    //         $review = Review::create([
+    //             'rate' => $request->rate,
+    //             'content' => $request->content,
+    //             'user_id' => $user->id,
+    //             'product_id' => $product->id,
+    //         ]);
+    
+    //         if ($request->has('images')) {
+    //             foreach ($request->images as $imageName) {
+    //                 $tempPath = './uploads/temp/' . $imageName;
+    //                 $finalPath = './uploads/customer/reviews/';
+    //                 if (file_exists(public_path($tempPath))) {
+    //                     rename(public_path($tempPath), public_path($finalPath . $imageName));
+    //                     ReviewImage::create([
+    //                         'review_id' => $review->id,
+    //                         'image' => $imageName
+    //                     ]);
+    //                 }
+    //             }
+    //         }
+    //         DB::commit();
+    //         Session::flash('success-review', 'Đánh giá của bạn đã được gửi!');
+    //     } catch (\Exception $e) {
+    //         DB::rollBack();
+    //         Session::flash('error-review', 'Đánh giá của bạn gửi thất bại! ' . $e->getMessage());
+    //     }
+    //     return redirect()->back();
+    // }
+    
+    // public function upload(Request $request)
+    // {
+    //     if ($request->hasFile('image')) {
+    //         foreach ($request->file('image') as $file) { 
+    //             $filename = time() . '_' . $file->getClientOriginalName();
+    //             $tempPath = './uploads/temp/'; 
+    //             $file->move(public_path($tempPath), $filename);
+    //         }
+    //         return response()->json(['success' => true, 'filename' => $filename]); 
+    //     }
+    //     return response()->json(['error' => 'No file uploaded'], 400);
+    // }
+
+    // public function revert(Request $request)
+    // {
+    //     $filename = $request->input('filename'); 
+    //     $tempPath = public_path('./uploads/temp/' . $filename); 
+    //     if (file_exists($tempPath) && !is_dir($tempPath)) {
+    //         unlink($tempPath); 
+    //         return response()->json(['success' => true]);
+    //     }
+    //     return response()->json(['error' => 'File not found or is a directory'], 404); 
+    // }
+
+    
+
+
+    public function clearTempImages(Request $request)
+    {
+        if ($request->has('images')) {
+            foreach ($request->images as $imageName) {
+                $tempPath = './uploads/temp/' . $imageName;
+                if (file_exists(public_path($tempPath))) {
+                    unlink(public_path($tempPath)); 
+                }
+            }
+            return response()->json(['success' => true]);
+        }
+        return response()->json(['error' => 'No images found'], 400);
+    }
 
 }

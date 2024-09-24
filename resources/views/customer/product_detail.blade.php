@@ -1,5 +1,24 @@
 @extends('customer.layout.main')
 
+@section('js')
+  <script src="/template/customer/js/rating.js"></script>
+
+  <!-- FilePond CSS -->
+    <link href="https://unpkg.com/filepond/dist/filepond.min.css" rel="stylesheet">
+    <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css" rel="stylesheet">
+
+    <!-- FilePond JS -->
+    <script src="https://unpkg.com/filepond/dist/filepond.min.js"></script>
+    <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.js"></script>
+    <script src="https://unpkg.com/filepond-plugin-file-validate-size/dist/filepond-plugin-file-validate-size.min.js"></script>
+
+  <script src="/template/customer/js/upload.js"></script>
+@endsection
+
+@section('css')
+ <link rel="stylesheet" href="/template/customer/css/fix-image.css">
+@endsection
+
 @section('content')
 
 @include('customer.layout.breadcrum')
@@ -97,15 +116,15 @@
         <div class="col">
             <div class="bg-light p-30">
                 <div class="nav nav-tabs mb-4">
-                    <a class="nav-item nav-link text-dark active" data-toggle="tab" href="#tab-pane-1">Mô tả</a>
-                    <a class="nav-item nav-link text-dark" data-toggle="tab" href="#tab-pane-2">Information</a>
-                    <a class="nav-item nav-link text-dark" data-toggle="tab" href="#tab-pane-3">Đánh giá (0)</a>
+                    <a class="nav-item nav-link text-dark active" data-toggle="tab" href="#description">Mô tả</a>
+                    <a class="nav-item nav-link text-dark" data-toggle="tab" href="#information">Information</a>
+                    <a class="nav-item nav-link text-dark" data-toggle="tab" href="#reviews">Đánh giá (0)</a>
                 </div>
                 <div class="tab-content">
-                    <div class="tab-pane fade show active" id="tab-pane-1">
+                    <div class="tab-pane fade show active" id="description">
                         {!! $product -> content !!}
                     </div>
-                    <div class="tab-pane fade" id="tab-pane-2">
+                    <div class="tab-pane fade" id="information">
                         <h4 class="mb-3">Additional Information</h4>
                         <p>Eos no lorem eirmod diam diam, eos elitr et gubergren diam sea. Consetetur vero aliquyam invidunt duo dolores et duo sit. Vero diam ea vero et dolore rebum, dolor rebum eirmod consetetur invidunt sed sed et, lorem duo et eos elitr, sadipscing kasd ipsum rebum diam. Dolore diam stet rebum sed tempor kasd eirmod. Takimata kasd ipsum accusam sadipscing, eos dolores sit no ut diam consetetur duo justo est, sit sanctus diam tempor aliquyam eirmod nonumy rebum dolor accusam, ipsum kasd eos consetetur at sit rebum, diam kasd invidunt tempor lorem, ipsum lorem elitr sanctus eirmod takimata dolor ea invidunt.</p>
                         <div class="row">
@@ -143,10 +162,10 @@
                             </div>
                         </div>
                     </div>
-                    <div class="tab-pane fade" id="tab-pane-3">
+                    <div class="tab-pane fade" id="reviews">
                         <div class="row">
                             <div class="col-md-6">
-                                <h4 class="mb-4">1 review for "Product Name"</h4>
+                                {{-- <h4 class="mb-4">1 review for "Product Name"</h4>
                                 <div class="media mb-4">
                                     <img src="img/user.jpg" alt="Image" class="img-fluid mr-3 mt-1" style="width: 45px;">
                                     <div class="media-body">
@@ -160,39 +179,53 @@
                                         </div>
                                         <p>Diam amet duo labore stet elitr ea clita ipsum, tempor labore accusam ipsum et no at. Kasd diam tempor rebum magna dolores sed sed eirmod ipsum.</p>
                                     </div>
-                                </div>
+                                </div> --}}
                             </div>
                             <div class="col-md-6">
-                                <h4 class="mb-4">Leave a review</h4>
-                                <small>Your email address will not be published. Required fields are marked *</small>
-                                <div class="d-flex my-3">
-                                    <p class="mb-0 mr-2">Your Rating * :</p>
-                                    <div class="text-primary">
-                                        <i class="far fa-star"></i>
-                                        <i class="far fa-star"></i>
-                                        <i class="far fa-star"></i>
-                                        <i class="far fa-star"></i>
-                                        <i class="far fa-star"></i>
+                                <h4 class="mb-4">Viết đánh giá</h4>
+                                <p>Email của bạn sẽ không được công khai. Các trường bắt buộc được đánh dấu *</p>
+                            
+                                @guest
+                                    <p>Vui lòng <a href="{{ route('login.customer.form') }}">đăng nhập</a> để viết đánh giá</p>
+                                @endguest
+                            
+                                
+                                <form action="{{ route('review', $product->slug) }}" method="POST" enctype="multipart/form-data">
+                                    <div class="d-flex my-3">
+                                        <p class="mb-0 mr-2">Số sao * :</p>
+                                        <div class="text-primary star-rating">
+                                            <i class="far fa-star" data-value="1"></i>
+                                            <i class="far fa-star" data-value="2"></i>
+                                            <i class="far fa-star" data-value="3"></i>
+                                            <i class="far fa-star" data-value="4"></i>
+                                            <i class="far fa-star" data-value="5"></i>
+                                        </div>
+                                        <input type="hidden" name="rate" id="rate" value="0">
                                     </div>
-                                </div>
-                                <form>
+                                    @csrf
                                     <div class="form-group">
-                                        <label for="message">Your Review *</label>
-                                        <textarea id="message" cols="30" rows="5" class="form-control"></textarea>
+                                        <label for="message">Đánh giá *</label>
+                                        <textarea 
+                                            placeholder="Viết đánh giá của bạn..." 
+                                            id="message" 
+                                            name="content"
+                                            cols="30" 
+                                            rows="5" 
+                                            class="form-control" 
+                                            required
+                                            @guest readonly @endguest
+                                        ></textarea>
                                     </div>
-                                    <div class="form-group">
-                                        <label for="name">Your Name *</label>
-                                        <input type="text" class="form-control" id="name">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="email">Your Email *</label>
-                                        <input type="email" class="form-control" id="email">
-                                    </div>
+                                    <input type="file" name="image[]" multiple id="filepond" data-max-file-size="2MB" data-max-files="6">
+                                    {{-- <input type="hidden" name="images[]" value=""> --}}
+                                    <div id="images-container"></div> 
                                     <div class="form-group mb-0">
-                                        <input type="submit" value="Leave Your Review" class="btn btn-primary px-3">
+                                        <input type="submit" value="Gửi đánh giá" class="btn btn-primary px-3" @guest disabled @endguest>
                                     </div>
                                 </form>
+                                
                             </div>
+                            
                         </div>
                     </div>
                 </div>

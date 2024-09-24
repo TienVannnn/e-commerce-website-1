@@ -70,4 +70,12 @@
     @if(Session::has('error-delete-account'))
         toastr.error("{{ Session::get('error-delete-account') }}", "Thành công");
     @endif
+
+    @if(Session::has('success-review'))
+        toastr.success("{{ Session::get('success-review') }}", "Thành công");
+    @endif
+
+    @if(Session::has('error-review'))
+        toastr.error("{{ Session::get('error-review') }}", "Thành công");
+    @endif
 </script>

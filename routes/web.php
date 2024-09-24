@@ -10,12 +10,11 @@ use App\Http\Controllers\Admin\SearchController;
 use App\Http\Controllers\Admin\SliderController;
 use App\Http\Controllers\Admin\ManagerController;
 use App\Http\Controllers\Admin\ProductController;
-use App\Http\Controllers\Customer\CartController;
-use App\Http\Controllers\Customer\HomeController;
 use App\Http\Controllers\Admin\CategoryController;
-use App\Http\Controllers\Admin\CartAdminController;
 use App\Http\Controllers\Admin\OrderAdminController;
 use App\Http\Controllers\Admin\PermissionController;
+use App\Http\Controllers\Customer\CartController;
+use App\Http\Controllers\Customer\HomeController;
 use App\Http\Controllers\Customer\FilterProductController;
 use App\Http\Controllers\Customer\FavoriteProductController;
 use App\Http\Controllers\Customer\CustomerOverviewController;
@@ -47,6 +46,7 @@ Route::middleware('auth:manager') -> prefix('admin') -> group(function(){
 #Customer
 
 Route::get('/', [HomeController::class, 'home']);
+Route::get('/all-products', [CustomerProductController::class, 'all_product']) -> name('all-product');
 Route::get('/category/{slug}', [HomeController::class, 'category']) -> name('category-c');
 Route::get('/category/{slugParent}/{slugChild}', [HomeController::class, 'category_child']) -> name('category-child');
 Route::get('/filter-products', [FilterProductController::class, 'filterProducts'])->name('filterProducts');
@@ -64,6 +64,10 @@ Route::get('/register', [CustomerAuthController::class, 'showFormRegister']) -> 
 Route::post('/register', [CustomerAuthController::class, 'register']) -> name('register.customer');
 Route::get('/search', [CustomerProductController::class, 'search']);
 Route::get('/search-products', [CustomerProductController::class, 'search_all_products']) -> name('search_all');
+Route::POST('/review-product/{slug}', [CustomerProductController::class, 'review']) -> name('review');
+Route::post('/upload', [CustomerProductController::class, 'upload'])->name('upload');
+Route::delete('/revert', [CustomerProductController::class, 'revert']) -> name('revert');
+Route::post('/clearTempImages', [CustomerProductController::class, 'clearTempImages']) -> name('clear.temp.images');
 
 # Overview customer
 Route::get('/customer/overview', [CustomerOverviewController::class, 'overview']) -> name('overview');

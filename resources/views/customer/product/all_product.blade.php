@@ -1,9 +1,5 @@
 @extends('customer.layout.main')
 
-{{-- @section('js')
-    <script></script>
-@endsection --}}
-
 @section('content')
 @include('customer.layout.breadcrum')
     <!-- Shop Start -->
@@ -14,7 +10,7 @@
                 <!-- Price Start -->
                 <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Filter by price</span></h5>
                 <div class="bg-light p-4 mb-30">
-                    <form id="priceFilterForm" data-category="{{ $category -> id }}">
+                    <form id="priceFilterForm">
                         <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                             <input type="checkbox" class="custom-control-input" checked id="price-all">
                             <label class="custom-control-label" for="price-all">All Price</label>
@@ -117,5 +113,4 @@
         </div>
     </div>
     <!-- Shop End -->
-
 @endsection
