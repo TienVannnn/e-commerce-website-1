@@ -50,7 +50,7 @@ Route::get('/all-products', [CustomerProductController::class, 'all_product']) -
 Route::get('/category/{slug}', [HomeController::class, 'category']) -> name('category-c');
 Route::get('/category/{slugParent}/{slugChild}', [HomeController::class, 'category_child']) -> name('category-child');
 Route::get('/filter-products', [FilterProductController::class, 'filterProducts'])->name('filterProducts');
-Route::get('/product/{slug}', [HomeController::class, 'product']) -> name('product-c');
+Route::get('/product/{slug}', [CustomerProductController::class, 'productDetail']) -> name('product-c');
 Route::get('/product/addToCart/{id}', [CartController::class, 'addToCart']) -> name('addToCart');
 Route::get('/product/addFavoriteProduct/{id}', [FavoriteProductController::class, 'addFavoriteProduct']) -> name('addFavoriteProduct');
 Route::get('/cart', [CartController::class, 'showCarts']) -> name('client.carts');

@@ -9,12 +9,43 @@ use App\Models\ReviewImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
 
 class ProductController extends Controller
 {
+    protected $cate;
+    protected $product;
+    protected $review;
+    public function __construct(Category $c, Product $pr, Review $review)
+    {
+        $this -> cate = $c;
+        $this -> product = $pr;
+        $this -> review = $review;
+    }
+
+    public function productDetail($slug)
+    {
+        $categories = $this->cate->where('active', 1)->where('parent_id', 0)->orderByDesc('id')->get();
+        $product = $this->product->where('active', 1)->where('slug', $slug)->first();
+        if (!$product) {
+            abort(404);
+        }
+        $reviews = $this -> review -> where('product_id', $product -> id) -> get();
+        $category = $this->cate->where('id', $product->category_id)->first();
+        while ($category->parent) {
+            $category = $category->parent;
+        }
+        $allCategoryIds = $category->allChildCategories()->get()->pluck('id')->toArray();
+        $allCategoryIds[] = $category->id;
+        $relativeProducts = Product::whereIn('category_id', $allCategoryIds)->where('id', '!=', $product->id)->get();
+        $title = $product->name;
+        return view('customer.product_detail', compact('title', 'product','reviews', 'categories', 'relativeProducts'));
+    }
+
+
     public function search(Request $request)
     {
         $search = $request->get('query');
@@ -79,6 +110,7 @@ class ProductController extends Controller
                 'content' => $request->content,
                 'user_id' => $user->id,
                 'product_id' => $product->id,
+                'created_at' => Carbon::now('Asia/Ho_Chi_Minh')
             ]);
     
             if ($request->has('images')) {
@@ -203,5 +235,7 @@ class ProductController extends Controller
         }
         return response()->json(['error' => 'No images found'], 400);
     }
+
+    
 
 }

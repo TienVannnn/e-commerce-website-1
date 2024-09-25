@@ -165,21 +165,29 @@
                     <div class="tab-pane fade" id="reviews">
                         <div class="row">
                             <div class="col-md-6">
-                                {{-- <h4 class="mb-4">1 review for "Product Name"</h4>
-                                <div class="media mb-4">
-                                    <img src="img/user.jpg" alt="Image" class="img-fluid mr-3 mt-1" style="width: 45px;">
-                                    <div class="media-body">
-                                        <h6>John Doe<small> - <i>01 Jan 2045</i></small></h6>
-                                        <div class="text-primary mb-2">
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star-half-alt"></i>
-                                            <i class="far fa-star"></i>
-                                        </div>
-                                        <p>Diam amet duo labore stet elitr ea clita ipsum, tempor labore accusam ipsum et no at. Kasd diam tempor rebum magna dolores sed sed eirmod ipsum.</p>
-                                    </div>
-                                </div> --}}
+                                @if($reviews)
+                                    @foreach ($reviews as $review)
+                                        <div class="media mb-4">
+                                            <img src="/uploads/customer/avatars/{{ $review -> user -> avatar ? $review -> user -> avatar : 'default-avatar.png' }}" alt="Image" class="img-fluid mr-3 mt-1" style="width: 45px;">
+                                            <div class="media-body">
+                                                <h6>{{ $review -> user -> name }}<small> - <i>{{ $review -> created_at -> diffForHumans() }}</i></small></h6>
+                                                <div class="text-primary mb-2">
+                                                    @for($i = 1; $i <= 5; $i++)
+                                                        @if($review->rate >= $i)
+                                                            <i class="fas fa-star"></i>
+                                                        @else
+                                                            <i class="far fa-star"></i> 
+                                                        @endif
+                                                    @endfor 
+                                                </div>
+                                                <p>{{ $review -> content }}</p>
+                                            </div>
+                                        </div>  
+                                    @endforeach
+                                @else
+                                    <p>Chưa có đánh giá nào ở sản phẩm này</p>
+                                @endif
+                                {{-- <h4 class="mb-4">1 review for "Product Name"</h4>--}}
                             </div>
                             <div class="col-md-6">
                                 <h4 class="mb-4">Viết đánh giá</h4>
@@ -216,7 +224,9 @@
                                             @guest readonly @endguest
                                         ></textarea>
                                     </div>
-                                    <input type="file" name="image[]" multiple id="filepond" data-max-file-size="2MB" data-max-files="6">
+                                    <input type="file" name="image[]" multiple id="filepond" data-max-file-size="2MB" data-max-files="6" @guest
+                                        disabled
+                                    @endguest>
                                     {{-- <input type="hidden" name="images[]" value=""> --}}
                                     <div id="images-container"></div> 
                                     <div class="form-group mb-0">
@@ -254,7 +264,7 @@
                             </div>
                         </div>
                         <div class="text-center py-4">
-                            <a class="h6 text-decoration-none text-truncate" href="">{{ $productItem -> name }}</a>
+                            <a class="h6 text-decoration-none text-truncate" href="{{ route('product-c', $product -> slug) }}">{{ $productItem -> name }}</a>
                             <div class="d-flex align-items-center justify-content-center mt-2">
                                 <h5>{{ number_format($productItem -> price) }}</h5><h6 class="text-muted ml-2"><del>{{ number_format($productItem -> price) }}</del></h6>
                             </div>

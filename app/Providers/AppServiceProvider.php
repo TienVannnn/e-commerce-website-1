@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Carbon\Carbon;
 use App\Models\Role;
 use App\Models\Manager;
 use App\Models\Product;
@@ -31,6 +32,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Carbon::setLocale('vi');
         Paginator::useBootstrap();
         // Gate::define('category-list', function (Manager $manager) {
         //     return $manager -> checkPermissionAccess('list_category');

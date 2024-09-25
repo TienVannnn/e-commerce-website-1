@@ -57,21 +57,5 @@ class HomeController extends Controller
         return view('customer.category', compact('title', 'categories', 'c_parent', 'category', 'products'));
     }
 
-    public function product($slug)
-    {
-        $categories = $this->cate->where('active', 1)->where('parent_id', 0)->orderByDesc('id')->get();
-        $product = $this->product->where('active', 1)->where('slug', $slug)->first();
-        if (!$product) {
-            abort(404);
-        }
-        $category = $this->cate->where('id', $product->category_id)->first();
-        while ($category->parent) {
-            $category = $category->parent;
-        }
-        $allCategoryIds = $category->allChildCategories()->get()->pluck('id')->toArray();
-        $allCategoryIds[] = $category->id;
-        $relativeProducts = Product::whereIn('category_id', $allCategoryIds)->where('id', '!=', $product->id)->get();
-        $title = $product->name;
-        return view('customer.product_detail', compact('title', 'product', 'categories', 'relativeProducts'));
-    }
+    
 }
