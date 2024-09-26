@@ -41,7 +41,7 @@
                                                     <i class="fa fa-minus"></i>
                                                     </button>
                                                 </div>
-                                                <input type="text" class="form-control form-control-sm bg-secondary border-0 text-center quantity-input" data-id="{{ $id }}" value="{{ $item['quantity'] }}">
+                                                <input type="text" class="form-control form-control-sm bg-secondary border-0 text-center quantity-input" readonly data-id="{{ $id }}" value="{{ $item['quantity'] }}">
                                                 <div class="input-group-btn">
                                                     <button class="btn btn-sm btn-primary btn-plus" data-id="{{ $id }}">
                                                         <i class="fa fa-plus"></i>

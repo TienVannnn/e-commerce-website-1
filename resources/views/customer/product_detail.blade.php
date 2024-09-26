@@ -13,6 +13,8 @@
     <script src="https://unpkg.com/filepond-plugin-file-validate-size/dist/filepond-plugin-file-validate-size.min.js"></script>
 
   <script src="/template/customer/js/upload.js"></script>
+  <script src="/template/customer/js/changeQuantityProductAddToCart.js"></script>
+  
 @endsection
 
 @section('css')
@@ -54,43 +56,59 @@
                 @endif
             </div>
         </div>
-
         <div class="col-lg-7 h-auto mb-30">
             <div class="h-100 bg-light p-30">
                 <h3>{{ $product -> name }}</h3>
                 <div class="d-flex mb-3">
                     <div class="text-primary mr-2">
-                        <small class="fas fa-star"></small>
-                        <small class="fas fa-star"></small>
-                        <small class="fas fa-star"></small>
-                        <small class="fas fa-star-half-alt"></small>
-                        <small class="far fa-star"></small>
+                        @for ($i = 1; $i <= 5; $i++)
+                            @if ($i <= $avgRate)
+                                <small class="fas fa-star"></small>
+                            @elseif ($i == ceil($avgRate) && $avgRate - floor($avgRate) > 0)
+                                <small class="fas fa-star-half-alt"></small>
+                            @else
+                                <small class="far fa-star"></small>
+                            @endif
+                        @endfor
                     </div>
-                    <small class="pt-1">(99 Reviews)</small>
+                    <small class="pt-1">({{ $product -> reviews -> count() ? $product -> reviews -> count() : 0 }} đánh giá)</small>
                 </div>
-                <h3 class="font-weight-semi-bold mb-4">{{ number_format($product -> price) }}đ</h3>
+                <h3 class="font-weight-semi-bold mb-4 text-primary">{{ number_format($product -> price) }}đ</h3>
                 <p class="mb-4">{{ $product -> short_des }}</p>
-                <a title="Thích sản phẩm này" class="btn btn-outline-dark addFavoriteProduct mb-4" 
-                                data-url="{{ route('addFavoriteProduct', ['id' => $product->id]) }}">
-                                <i class="far fa-heart"></i>
-                Thích sản phẩm</a>
+                <div class="mb-4">
+                    @if($product -> quantity > 0)
+                        <a href=""  class="btn btn-primary"><i class="fas fa-shopping-basket"></i> Mua ngay</a>
+                    @endif
+                    <a title="Thích sản phẩm này" class="btn addFavoriteProduct btn-outline-dark" 
+                        data-url="{{ route('addFavoriteProduct', ['id' => $product->id]) }}">
+                    <i class="far fa-heart"></i> Thêm vào yêu thích</a>
+                </div>
                 <div class="d-flex align-items-center mb-4 pt-2">
                     <div class="input-group quantityy mr-3" style="width: 130px;">
                         <div class="input-group-btn">
-                            <button class="btn btn-primary btn-minuss">
+                            <button class="btn btn-primary btn-minuss" {{ $product -> quantity <= 0 ? 'disabled' : '' }}>
                                 <i class="fa fa-minus"></i>
                             </button>
                         </div>
-                        <input type="text" class="form-control bg-secondary border-0 text-center quantity-product" value="1">
+                        <input type="number" class="form-control bg-secondary border-0 text-center quantity-product" value="1" data-quantity-max="{{ $product -> quantity }}" {{ $product -> quantity == 0 ? 'disabled' : '' }}>
                         <div class="input-group-btn">
-                            <button class="btn btn-primary btn-pluss">
+                            <button class="btn btn-primary btn-pluss" {{ $product -> quantity <= 0 ? 'disabled' : '' }}>
                                 <i class="fa fa-plus"></i>
                             </button>
                         </div>
                     </div>
-                    <button class="btn btn-primary px-3 addToCartWithQuantity" data-url="{{ route('addToCart', ['id' => $product -> id]) }}"><i class="fa fa-shopping-cart mr-1"></i> 
-                        Add To Cart
+                    <button class="btn btn-primary px-3 addToCartWithQuantity" data-url="{{ route('addToCart', ['id' => $product -> id]) }}" {{ $product -> quantity <= 0 ? 'disabled' : '' }}><i class="fa fa-shopping-cart mr-1"></i> 
+                        Thêm vào giỏ hàng
                     </button>
+                </div>
+                <div class="align-items-center mb-4 pt-2">
+                    <strong class="text-dark mr-2">Mã sản phẩm: </strong> <span>{{ $product -> code }}</span>
+                    <br>
+                    <strong class="text-dark mr-2">Loại: </strong> <span>{{ $product -> category -> name }}</span>
+                    <br>
+                    <strong class="text-dark mr-2">Tình trạng: </strong> <span>{{ $product -> quantity > 0 ? 'Còn hàng' : 'Hết hàng' }}</span>
+                    <br>
+                    <strong class="text-dark mr-2">Đã bán: </strong> <span>{{ $product -> quantity_sold }} sản phẩm</span>
                 </div>
                 <div class="d-flex pt-2">
                     <strong class="text-dark mr-2">Share on:</strong>
@@ -118,7 +136,7 @@
                 <div class="nav nav-tabs mb-4">
                     <a class="nav-item nav-link text-dark active" data-toggle="tab" href="#description">Mô tả</a>
                     <a class="nav-item nav-link text-dark" data-toggle="tab" href="#information">Information</a>
-                    <a class="nav-item nav-link text-dark" data-toggle="tab" href="#reviews">Đánh giá (0)</a>
+                    <a class="nav-item nav-link text-dark" data-toggle="tab" href="#reviews">Đánh giá ({{ $product -> reviews -> count() ? $product -> reviews -> count() : 0 }})</a>
                 </div>
                 <div class="tab-content">
                     <div class="tab-pane fade show active" id="description">
@@ -165,13 +183,13 @@
                     <div class="tab-pane fade" id="reviews">
                         <div class="row">
                             <div class="col-md-6">
-                                @if($reviews)
+                                @if($reviews -> isNotEmpty())
                                     @foreach ($reviews as $review)
-                                        <div class="media mb-4">
+                                        <div class="media">
                                             <img src="/uploads/customer/avatars/{{ $review -> user -> avatar ? $review -> user -> avatar : 'default-avatar.png' }}" alt="Image" class="img-fluid mr-3 mt-1" style="width: 45px;">
                                             <div class="media-body">
                                                 <h6>{{ $review -> user -> name }}<small> - <i>{{ $review -> created_at -> diffForHumans() }}</i></small></h6>
-                                                <div class="text-primary mb-2">
+                                                <div class="text-primary">
                                                     @for($i = 1; $i <= 5; $i++)
                                                         @if($review->rate >= $i)
                                                             <i class="fas fa-star"></i>
@@ -185,9 +203,8 @@
                                         </div>  
                                     @endforeach
                                 @else
-                                    <p>Chưa có đánh giá nào ở sản phẩm này</p>
+                                    <p class="text-danger p-3"><i class="fas fa-info-circle"></i> Chưa có đánh giá nào ở sản phẩm này</p>
                                 @endif
-                                {{-- <h4 class="mb-4">1 review for "Product Name"</h4>--}}
                             </div>
                             <div class="col-md-6">
                                 <h4 class="mb-4">Viết đánh giá</h4>

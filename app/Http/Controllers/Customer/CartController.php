@@ -26,11 +26,13 @@ class CartController extends Controller
         $this -> cate = $category;
     }
     public function addToCart(Request $request, $id){
-        $product = Product:: find($id);
+        $product = Product::find($id);
         $carts = session() -> get('carts');
         $quantity = $request->input('quantity', 1);
         if(isset($carts[$id])){
-            $carts[$id]['quantity'] = $carts[$id]['quantity'] + $quantity;
+            if($carts[$id]['quantity'] < $product -> quantity){
+                $carts[$id]['quantity'] = $carts[$id]['quantity'] + ($product -> quantity - $quantity);
+            }
         }
         else{
             $carts[$id] = [
@@ -60,22 +62,36 @@ class CartController extends Controller
     public function updateCart(Request $request, $id)
     {
         $quantity = $request->quantity;
+        $product = Product::find($id);
+
+        if (!$product) {
+            return response()->json(['error' => 'Product not found'], 404);
+        }
+        if ($quantity > $product->quantity) {
+            return response()->json([
+                'error' => 'Sản phẩm ' . $product -> name . ' chỉ còn ' . $product -> quantity . ' sản phẩm.',
+                'available_quantity' => $product->quantity,
+            ], 400);
+        }
+
         $carts = session()->get('carts');
         if (isset($carts[$id])) {
             $carts[$id]['quantity'] = $quantity;
             session()->put('carts', $carts);
+
             $subtotal = array_sum(array_map(function ($item) {
                 return $item['price'] * $item['quantity'];
             }, $carts));
+
             return response()->json([
                 'price' => $carts[$id]['price'],
                 'quantity' => $quantity,
                 'subtotal' => number_format($subtotal) . ' đ',
-                'total' => number_format($subtotal + 10000) . ' đ'
+                'total' => number_format($subtotal + 10000) . ' đ' // Giả sử phí vận chuyển là 10,000đ
             ], 200);
         }
 
-        return response()->json(['error' => 'Product not found'], 404);
+        return response()->json(['error' => 'Product not found in cart'], 404);
     }
 
     public function removeFromCart($id) {
@@ -180,11 +196,15 @@ class CartController extends Controller
         $products = Product::where('active', 1) -> whereIn('id', $productId) -> get();
         $data = [];
         foreach($products as $product){
+            $cartQuantity = $carts[$product->id]['quantity'];
+            $product->quantity -= $cartQuantity;
+            $product->quantity_sold += $cartQuantity;
+            $product->save();
             $data[] = [
                 'invoice_id' => $invoice_id,
                 'product_id' => $product -> id,
                 'quantity' => $carts[$product -> id]['quantity'],
-                'total_price' => $carts[$product -> id]['price'] * $carts[$product -> id]['quantity'],
+                'total_price' => $carts[$product -> id]['price'] * $cartQuantity,
                 // 'created_at' => 
             ];
         }

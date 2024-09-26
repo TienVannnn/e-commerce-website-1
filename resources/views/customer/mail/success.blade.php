@@ -36,7 +36,7 @@
           <tr>
               <td> {{ $count }}</td>
               <td>{{ $detail['name'] }}</td> 
-              <td><img src="{{ asset('uploads/products/' . $detail['image']) }}" alt="{{ $detail['name'] }}" width="50"></td>
+              <td><img src="{{ asset('/uploads/products/' . $detail['image']) }}" alt="{{ $detail['name'] }}" width="50"></td>
               <td>{{ number_format($detail['price']) }}đ</td>
               <td>{{ $detail['quantity'] }}</td>
               <td>{{ number_format($detail['quantity'] * $detail['price']) }}đ</td>

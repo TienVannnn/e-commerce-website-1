@@ -1,9 +1,3 @@
-// $.ajaxSetup({
-//     headers: {
-//         "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
-//     },
-// });
-
 $(document).ready(function () {
     function updateTotalPrice(productId, price, quantity) {
         let total = price * quantity;
@@ -13,7 +7,7 @@ $(document).ready(function () {
     }
 
     // Hàm cập nhật giỏ hàng qua AJAX
-    function updateCart(productId, quantity) {
+    function updateCart(productId, quantity, callback) {
         $.ajax({
             url: "/update-cart/" + productId,
             type: "POST",
@@ -21,15 +15,16 @@ $(document).ready(function () {
                 quantity: quantity,
             },
             success: function (response) {
-                let price = response.price;
-                let quantity = response.quantity;
-                $("#subtotal").text(response.subtotal);
-                $("#total-sumary").text(response.total);
-                updateTotalPrice(productId, price, quantity);
-                toastr.success("Cập nhật sản phẩm thành công", "Thành công");
+                // Gọi callback khi cập nhật giỏ hàng thành công
+                if (typeof callback === "function") {
+                    callback(true, response);
+                }
             },
             error: function (error) {
-                console.log("Error:", error);
+                // Gọi callback khi có lỗi
+                if (typeof callback === "function") {
+                    callback(false, error.responseJSON);
+                }
             },
         });
     }
@@ -38,21 +33,54 @@ $(document).ready(function () {
     $(".btn-plus").click(function () {
         let productId = $(this).data("id");
         let quantityInput = $(".quantity-input[data-id='" + productId + "']");
-        let quantity = parseInt(quantityInput.val());
-        quantity++;
-        quantityInput.val(quantity);
-        updateCart(productId, quantity);
+        let currentQuantity = parseInt(quantityInput.val());
+        let newQuantity = currentQuantity + 1;
+
+        // Gọi updateCart với số lượng mới và chờ phản hồi từ server
+        updateCart(productId, newQuantity, function (success, response) {
+            if (success) {
+                // Nếu không có lỗi, cập nhật giá trị input và tổng giá
+                quantityInput.val(newQuantity);
+                let price = response.price;
+                let quantity = response.quantity;
+                $("#subtotal").text(response.subtotal);
+                $("#total-sumary").text(response.total);
+                updateTotalPrice(productId, price, quantity);
+                toastr.success("Cập nhật sản phẩm thành công", "Thành công");
+            } else {
+                // Nếu có lỗi, hiển thị thông báo lỗi và không cập nhật giá trị input
+                toastr.error(response.error, "Lỗi");
+            }
+        });
     });
 
     // Xử lý khi nhấn nút giảm số lượng
     $(".btn-minus").click(function () {
         let productId = $(this).data("id");
         let quantityInput = $(".quantity-input[data-id='" + productId + "']");
-        let quantity = parseInt(quantityInput.val());
-        if (quantity > 1) {
-            quantity--;
-            quantityInput.val(quantity);
-            updateCart(productId, quantity);
+        let currentQuantity = parseInt(quantityInput.val());
+        let newQuantity = currentQuantity - 1;
+
+        if (newQuantity > 0) {
+            // Gọi updateCart với số lượng mới và chờ phản hồi từ server
+            updateCart(productId, newQuantity, function (success, response) {
+                if (success) {
+                    // Nếu không có lỗi, cập nhật giá trị input và tổng giá
+                    quantityInput.val(newQuantity);
+                    let price = response.price;
+                    let quantity = response.quantity;
+                    $("#subtotal").text(response.subtotal);
+                    $("#total-sumary").text(response.total);
+                    updateTotalPrice(productId, price, quantity);
+                    toastr.success(
+                        "Cập nhật sản phẩm thành công",
+                        "Thành công"
+                    );
+                } else {
+                    // Nếu có lỗi, hiển thị thông báo lỗi và không cập nhật giá trị input
+                    toastr.error(response.error, "Lỗi");
+                }
+            });
         }
     });
 

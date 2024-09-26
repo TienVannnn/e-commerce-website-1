@@ -32,4 +32,8 @@ class Product extends Model
     public function images_detail(){
         return $this -> hasMany(Product_Image::class, 'product_id', 'id');
     }
+
+    public function reviews(){
+        return $this -> hasMany(Review::class);
+    }
 }

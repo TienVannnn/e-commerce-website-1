@@ -34,6 +34,10 @@ class ProductController extends Controller
             abort(404);
         }
         $reviews = $this -> review -> where('product_id', $product -> id) -> get();
+        $sum = $reviews->sum('rate'); 
+        $count = $reviews->count(); 
+
+        $avgRate = $count > 0 ? floor($sum / $count) : 5;
         $category = $this->cate->where('id', $product->category_id)->first();
         while ($category->parent) {
             $category = $category->parent;
@@ -42,7 +46,7 @@ class ProductController extends Controller
         $allCategoryIds[] = $category->id;
         $relativeProducts = Product::whereIn('category_id', $allCategoryIds)->where('id', '!=', $product->id)->get();
         $title = $product->name;
-        return view('customer.product_detail', compact('title', 'product','reviews', 'categories', 'relativeProducts'));
+        return view('customer.product_detail', compact('title', 'product','reviews', 'categories', 'relativeProducts', 'avgRate'));
     }
 
 
