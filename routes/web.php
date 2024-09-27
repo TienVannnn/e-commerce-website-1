@@ -51,6 +51,7 @@ Route::get('/category/{slug}', [HomeController::class, 'category']) -> name('cat
 Route::get('/category/{slugParent}/{slugChild}', [HomeController::class, 'category_child']) -> name('category-child');
 Route::get('/filter-products', [FilterProductController::class, 'filterProducts'])->name('filterProducts');
 Route::get('/product/{slug}', [CustomerProductController::class, 'productDetail']) -> name('product-c');
+Route::get('/load-more-reviews', [CustomerProductController::class, 'loadMoreReviews'])->name('load-more-reviews');
 Route::get('/product/addToCart/{id}', [CartController::class, 'addToCart']) -> name('addToCart');
 Route::get('/product/addFavoriteProduct/{id}', [FavoriteProductController::class, 'addFavoriteProduct']) -> name('addFavoriteProduct');
 Route::get('/cart', [CartController::class, 'showCarts']) -> name('client.carts');

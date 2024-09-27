@@ -118,6 +118,12 @@
     <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-secondary pr-3">Sản phẩm nổi bật</span></h2>
     <div class="row px-xl-5">
         @foreach ($productFeatured as $product)
+        <?php
+            $reviews = $product -> reviews;
+            $sum = $reviews -> sum('rate');
+            $count = $reviews -> count();
+            $avgRate = $count > 0 ? floor($sum / $count) : 5;
+        ?>
             <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
                 <div class="product-item bg-light mb-4">
                     <div class="product-img position-relative overflow-hidden">
@@ -138,12 +144,20 @@
                             <h5>{{ number_format($product -> price) }}đ</h5><h6 class="text-muted ml-2"><del>{{ number_format($product -> price) }}đ</del></h6>
                         </div>
                         <div class="d-flex align-items-center justify-content-center mb-1">
-                            <small class="fa fa-star text-primary mr-1"></small>
-                            <small class="fa fa-star text-primary mr-1"></small>
-                            <small class="fa fa-star text-primary mr-1"></small>
-                            <small class="fa fa-star text-primary mr-1"></small>
-                            <small class="fa fa-star text-primary mr-1"></small>
-                            <small>(99)</small>
+                            @for ($i = 1; $i <= 5; $i++)
+                                @if ($i <= floor($product->avgRate))
+                                    <small class="fas fa-star text-primary"></small>
+                                @elseif ($i == ceil($product->avgRate))
+                                    @if (($product->avgRate - floor($product->avgRate)) == 0.5)
+                                        <small class="fas fa-star-half-alt text-primary"></small>
+                                    @else
+                                        <small class="far fa-star text-primary"></small>
+                                    @endif
+                                @else
+                                    <small class="far fa-star text-primary"></small>
+                                @endif
+                            @endfor
+                            <small>(Đã bán {{ $product -> quantity_sold }})</small>
                         </div>
                     </div>
                 </div>
@@ -207,12 +221,20 @@
                             <h5>{{ number_format($product -> price) }}đ</h5><h6 class="text-muted ml-2"><del>{{ number_format($product -> price) }}đ</del></h6>
                         </div>
                         <div class="d-flex align-items-center justify-content-center mb-1">
-                            <small class="fa fa-star text-primary mr-1"></small>
-                            <small class="fa fa-star text-primary mr-1"></small>
-                            <small class="fa fa-star text-primary mr-1"></small>
-                            <small class="fa fa-star text-primary mr-1"></small>
-                            <small class="fa fa-star text-primary mr-1"></small>
-                            <small>(99)</small>
+                            @for ($i = 1; $i <= 5; $i++)
+                                @if ($i <= floor($product->avgRate))
+                                    <small class="fas fa-star text-primary"></small>
+                                @elseif ($i == ceil($product->avgRate))
+                                    @if (($product->avgRate - floor($product->avgRate)) == 0.5)
+                                        <small class="fas fa-star-half-alt text-primary"></small>
+                                    @else
+                                        <small class="far fa-star text-primary"></small>
+                                    @endif
+                                @else
+                                    <small class="far fa-star text-primary"></small>
+                                @endif
+                            @endfor
+                            <small>(Đã bán {{ $product -> quantity_sold }})</small>
                         </div>
                     </div>
                 </div>

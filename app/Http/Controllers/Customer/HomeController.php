@@ -20,11 +20,32 @@ class HomeController extends Controller
         $this -> cate = $c;
         $this -> product = $pr;
     }
+
+    private function calculateAvgRate($products)
+    {
+        foreach ($products as $product) {
+            $reviews = $product->reviews;
+            $sum = $reviews->sum('rate');
+            $count = $reviews->count();
+            $product->avgRate = $count > 0 ? round($sum / $count * 2) / 2 : 5;
+        }
+        return $products;
+    }
     public function home(){
         $sliders = $this -> slider -> where('active', 1) -> orderByDesc('id') -> get();
         $categories = $this -> cate -> where('active', 1) -> where('parent_id', 0) -> orderByDesc('id') -> get();
-        $productFeatured = $this -> product -> where('active', 1) -> inRandomOrder() -> take(8) -> get();
-        $recentProducts = $this -> product -> where('active', 1) -> orderByDesc('id') -> take(8) -> get();
+        $productFeatured = $this->product
+            ->where('active', 1)
+            ->inRandomOrder()
+            ->take(8)
+            ->get();
+        $recentProducts = $this->product
+            ->where('active', 1)
+            ->orderByDesc('id')
+            ->take(8)
+            ->get();
+        $productFeatured = $this->calculateAvgRate($productFeatured);
+        $recentProducts = $this->calculateAvgRate($recentProducts);
         return view('customer.home', compact('sliders', 'categories', 'productFeatured', 'recentProducts'));
     }
 

@@ -33,11 +33,11 @@ class ProductController extends Controller
         if (!$product) {
             abort(404);
         }
-        $reviews = $this -> review -> where('product_id', $product -> id) -> get();
+        $reviews = $this -> review -> where('product_id', $product -> id) -> orderByDesc('id') -> limit(2) -> get();
         $sum = $reviews->sum('rate'); 
-        $count = $reviews->count(); 
+        $count = Review::where('product_id', $product -> id)->count(); 
 
-        $avgRate = $count > 0 ? floor($sum / $count) : 5;
+        $avgRate = $count > 0 ? round($sum / $count * 2) / 2 : 5;
         $category = $this->cate->where('id', $product->category_id)->first();
         while ($category->parent) {
             $category = $category->parent;
@@ -46,8 +46,45 @@ class ProductController extends Controller
         $allCategoryIds[] = $category->id;
         $relativeProducts = Product::whereIn('category_id', $allCategoryIds)->where('id', '!=', $product->id)->get();
         $title = $product->name;
-        return view('customer.product_detail', compact('title', 'product','reviews', 'categories', 'relativeProducts', 'avgRate'));
+        return view('customer.product_detail', compact('title', 'product','reviews', 'categories', 'relativeProducts', 'avgRate', 'count'));
     }
+
+    public function loadMoreReviews(Request $request)
+    {
+        $productId = $request->input('product_id');
+
+        $reviews = Review::where('product_id', $productId)
+            ->orderBy('id', 'desc')
+            -> skip(2) -> take(PHP_INT_MAX)
+            ->get(); 
+
+        $html = '';
+
+        foreach ($reviews as $review) {
+            $html .= '<div class="media">
+                        <img src="/uploads/customer/avatars/' . ($review->user->avatar ? $review->user->avatar : 'default-avatar.png') . '" alt="Image" class="img-fluid mr-3 mt-1" style="width: 45px;">
+                        <div class="media-body">
+                            <h6>' . $review->user->name . '<small> - <i>' . $review->created_at->diffForHumans() . '</i></small></h6>
+                        <div class="text-primary">';
+
+            for ($i = 1; $i <= 5; $i++) {
+                if ($review->rate >= $i) {
+                    $html .= '<i class="fas fa-star"></i>';
+                } else {
+                    $html .= '<i class="far fa-star"></i>';
+                }
+            }
+
+            $html .= '</div>
+                            <p>' . $review->content . '</p>
+                        </div>
+                    </div>';
+        }
+
+        return response()->json($html);
+    }
+
+
 
 
     public function search(Request $request)

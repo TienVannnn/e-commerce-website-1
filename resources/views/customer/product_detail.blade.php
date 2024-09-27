@@ -14,6 +14,7 @@
 
   <script src="/template/customer/js/upload.js"></script>
   <script src="/template/customer/js/changeQuantityProductAddToCart.js"></script>
+  <script src="/template/customer/js/loadMore.js"></script>
   
 @endsection
 
@@ -62,14 +63,18 @@
                 <div class="d-flex mb-3">
                     <div class="text-primary mr-2">
                         @for ($i = 1; $i <= 5; $i++)
-                            @if ($i <= $avgRate)
-                                <small class="fas fa-star"></small>
-                            @elseif ($i == ceil($avgRate) && $avgRate - floor($avgRate) > 0)
-                                <small class="fas fa-star-half-alt"></small>
-                            @else
-                                <small class="far fa-star"></small>
-                            @endif
-                        @endfor
+                                @if ($i <= floor($avgRate))
+                                    <small class="fas fa-star text-primary"></small>
+                                @elseif ($i == ceil($avgRate))
+                                    @if (($avgRate - floor($avgRate)) == 0.5)
+                                        <small class="fas fa-star-half-alt text-primary"></small>
+                                    @else
+                                        <small class="far fa-star text-primary"></small>
+                                    @endif
+                                @else
+                                    <small class="far fa-star text-primary"></small>
+                                @endif
+                            @endfor
                     </div>
                     <small class="pt-1">({{ $product -> reviews -> count() ? $product -> reviews -> count() : 0 }} đánh giá)</small>
                 </div>
@@ -202,9 +207,14 @@
                                             </div>
                                         </div>  
                                     @endforeach
+                                    @if($count > 2)
+                                        <button id="show-all-reviews" class="btn btn-primary mt-3" data-id="{{ $product -> id }}">Xem thêm đánh giá</button>
+                                    @endif
                                 @else
                                     <p class="text-danger p-3"><i class="fas fa-info-circle"></i> Chưa có đánh giá nào ở sản phẩm này</p>
                                 @endif
+                                <div id="all-reviews" style="display: none;"></div>
+                                <button id="hide-reviews" class="btn btn-secondary mt-3" style="display: none;">Ẩn bớt đánh giá</button>
                             </div>
                             <div class="col-md-6">
                                 <h4 class="mb-4">Viết đánh giá</h4>
@@ -213,7 +223,6 @@
                                 @guest
                                     <p>Vui lòng <a href="{{ route('login.customer.form') }}">đăng nhập</a> để viết đánh giá</p>
                                 @endguest
-                            
                                 
                                 <form action="{{ route('review', $product->slug) }}" method="POST" enctype="multipart/form-data">
                                     <div class="d-flex my-3">
